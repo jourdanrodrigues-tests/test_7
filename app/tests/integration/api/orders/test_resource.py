@@ -59,7 +59,7 @@ class TestCreate(BaseAPITestCase):
 
 
 class TestUpdate(BaseAPITestCase):
-    def test_when_data_is_correct_and_user_is_logged_then_returns_order_data_and_created_status(self):
+    def test_when_data_is_correct_and_user_is_logged_then_updates_order_and_returns_ok_status(self):
         user = self.authenticate_and_get_user()
 
         pizza = Pizza.objects.create()
@@ -83,3 +83,21 @@ class TestUpdate(BaseAPITestCase):
         self.assertEqual(order.address, patch_data['address'])
         self.assertEqual(order.pizza_size, patch_data['pizza_size'])
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+class TestDelete(BaseAPITestCase):
+    def test_when_order_is_deleted_then_removes_from_database_and_returns_no_content_status(self):
+        user = self.authenticate_and_get_user()
+
+        pizza = Pizza.objects.create()
+        order = Order.objects.create(
+            customer=user,
+            pizza=pizza,
+            pizza_size=Order.FIFTY_CM_PIZZA,
+            address='1st St.',
+        )
+
+        response = self.client.delete('/api/orders/{}/'.format(order.id))
+
+        self.assertFalse(Order.objects.filter(customer=user).exists())
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
