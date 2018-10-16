@@ -24,6 +24,12 @@ To make your life slightly easier, the script [`compose.sh`](compose.sh) is ther
 container. It's just a wrapper for `docker-compose`, so you might want to take a look at
 [its documentation][docker-compose-docs].
 
+Most of the Django commands are shortened, and you can use as the example below:
+
+```bash
+./compose.sh dev run [test/makemigrations/compilemessages/etc.]
+```
+
 ### Production mode
 
 ```bash
