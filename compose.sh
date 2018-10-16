@@ -14,4 +14,14 @@ if [ "${1}" == 'run' ]; then
   COMMAND="${COMMAND} run --rm"
 fi
 
+if [ "${1}" = 'test' ] ||
+   [ "${1}" = 'migrate' ] ||
+   [ "${1}" = 'makemigrations' ] ||
+   [ "${1}" = 'showmigrations' ] ||
+   [ "${1}" = 'makemessages' ] ||
+   [ "${1}" = 'compilemessages' ]; then
+  COMMAND="${COMMAND} server python manage.py ${1}"
+  shift
+fi
+
 ${COMMAND} ${@}
