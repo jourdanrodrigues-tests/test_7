@@ -3,6 +3,7 @@ from uuid import uuid4
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import ugettext as _
+from rest_framework.authtoken.models import Token
 
 
 class AbstractUUIDModel(models.Model):
@@ -13,7 +14,11 @@ class AbstractUUIDModel(models.Model):
 
 
 class User(AbstractUser, AbstractUUIDModel):
-    pass
+    def get_token(self):
+        if hasattr(self, 'auth_token'):
+            return self.auth_token
+        else:
+            return Token.objects.create(user=self)
 
 
 class Pizza(AbstractUUIDModel):
