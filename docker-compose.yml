@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+
+  db:
+    container_name: jobbot_test_db
+    image: postgres:10.3
+    environment:
+      - POSTGRES_PASSWORD=jobbot_test_pass
+      - POSTGRES_USER=jobbot_test_user
+      - POSTGRES_DB=jobbot_test_db
+
+  server:
+    container_name: jobbot_test_server
+    build: .
+    command: gunicorn -b 0.0.0.0:8000 core.wsgi --log-file -
+    environment:
+      - DATABASE_URL=postgres://jobbot_test_user:jobbot_test_pass@db/jobbot_test_db
+      - PRODUCTION=1
+      # Set the following in your environment or in the ".env" file
+      - ALLOWED_HOSTS
+      - SECRET_KEY
+    ports:
+      - "8000:8000"
+    links:
+      - db
