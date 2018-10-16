@@ -16,6 +16,11 @@ class User(AbstractUser, AbstractUUIDModel):
     pass
 
 
+class Pizza(AbstractUUIDModel):
+    # Picture lots of attributes
+    pass
+
+
 class Order(AbstractUUIDModel):
     THIRTY_CM_PIZZA = 1
     FIFTY_CM_PIZZA = 2
@@ -24,6 +29,7 @@ class Order(AbstractUUIDModel):
         (FIFTY_CM_PIZZA, _('50cm pizza')),
     )
 
+    pizza = models.ForeignKey(Pizza, on_delete=models.CASCADE)
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
     address = models.TextField()
     pizza_size = models.PositiveSmallIntegerField(choices=PIZZA_SIZE_CHOICES)
