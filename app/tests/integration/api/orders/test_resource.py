@@ -56,3 +56,30 @@ class TestCreate(BaseAPITestCase):
 
         self.assertDictEqual(data, expected_data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+
+class TestUpdate(BaseAPITestCase):
+    def test_when_data_is_correct_and_user_is_logged_then_returns_order_data_and_created_status(self):
+        user = self.authenticate_and_get_user()
+
+        pizza = Pizza.objects.create()
+        order = Order.objects.create(
+            customer=user,
+            pizza=pizza,
+            pizza_size=Order.FIFTY_CM_PIZZA,
+            address='1st St.',
+        )
+        # These will be fetched again
+        del order.address
+        del order.pizza_size
+
+        patch_data = {
+            'pizza_size': Order.THIRTY_CM_PIZZA,
+            'address': '2nd St.',
+        }
+
+        response = self.client.patch('/api/orders/{}/'.format(order.id), patch_data)
+
+        self.assertEqual(order.address, patch_data['address'])
+        self.assertEqual(order.pizza_size, patch_data['pizza_size'])
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
