@@ -4,6 +4,8 @@ from app.models import Order
 
 
 class OrderSerializer(serializers.ModelSerializer):
+    id = serializers.UUIDField(read_only=True)
+
     def get_logged_user(self):
         return self.context['request'].user
 
@@ -13,4 +15,4 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ('address', 'pizza', 'pizza_size')
+        fields = ('id', 'address', 'pizza', 'pizza_size')
