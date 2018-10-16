@@ -9,7 +9,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data['customer'] = self.get_logged_user()
-        super().create(validated_data)
+        return super().create(validated_data)
 
     class Meta:
         model = Order
