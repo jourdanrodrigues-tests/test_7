@@ -42,6 +42,12 @@ Most of the Django commands are shortened, and you can use as the example below:
 ./compose.sh dev up
 ```
 
+### Tests
+
+```bash
+./compose [dev] run test
+```
+
 [template-link]: https://github.com/jourdanrodrigues/django-template
 [docker-download]: https://www.docker.com/community-edition#/download
 [docker-compose-docs]: https://docs.docker.com/compose/reference/
